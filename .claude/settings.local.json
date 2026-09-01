@@ -1,0 +1,5 @@
+{
+  "skillOverrides": {
+    "android-cli": "off"
+  }
+}
