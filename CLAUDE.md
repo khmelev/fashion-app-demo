@@ -6,9 +6,12 @@ Favor readable, teachable code over clever abstractions.
 
 ## Status
 
-Project is not yet scaffolded. No `pubspec.yaml` / Flutter project exists in this repo yet — this
-file documents the intended stack and conventions so future work stays consistent from the first
-commit onward.
+Scaffolded. The Flutter project (`pubspec.yaml`, platform folders, `lib/`, `test/`) exists and
+follows the structure and conventions below. `lib/main.dart` boots a `FashionApp` with manual
+Navigator 2.0 routing between a `CatalogScreen` (backed by in-memory fake data in
+`lib/utils/fake_data.dart`) and a `ProductDetailScreen`. The gRPC backend isn't wired up yet —
+`lib/services/` and `proto/` are still empty, pending `.proto` definitions / service address from
+the user.
 
 ## Tech stack & key decisions
 
@@ -32,7 +35,7 @@ commit onward.
   - Because the backend isn't always running, prefer building UI against fake/in-memory data first
     when the service isn't available, then wire up the real gRPC calls.
 
-## Intended project structure
+## Project structure
 
 ```
 lib/
@@ -62,10 +65,9 @@ Only promote a widget to `widgets/` once it's actually reused in more than one p
   layout fixes, responsive layout, JSON serialization, etc.) — use them for the matching tasks
   (e.g. `flutter-add-widget-test`, `dart-run-static-analysis`, `flutter-fix-layout-issues`).
 
-## Commands (once the Flutter project is scaffolded)
+## Commands
 
 ```
-flutter create .          # scaffold, if not already done
 flutter pub get
 flutter analyze
 flutter test
