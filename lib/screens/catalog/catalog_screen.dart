@@ -1,74 +1,60 @@
+import 'package:fashion_app/screens/catalog/product_tile.dart';
+import 'package:fashion_app/services/product_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/product.dart';
-import '../../utils/fake_data.dart';
 
 /// Displays the product catalog as a grid and reports taps via
 /// [onProductSelected].
-class CatalogScreen extends StatelessWidget {
+class CatalogScreen extends StatefulWidget {
   const CatalogScreen({super.key, required this.onProductSelected});
 
   final ValueChanged<Product> onProductSelected;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Fashion App')),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          childAspectRatio: 0.72,
-        ),
-        itemCount: fakeProducts.length,
-        itemBuilder: (context, index) {
-          final product = fakeProducts[index];
-          return _ProductTile(
-            product: product,
-            onTap: () => onProductSelected(product),
-          );
-        },
-      ),
-    );
-  }
+  State<CatalogScreen> createState() => _CatalogScreenState();
 }
 
-class _ProductTile extends StatelessWidget {
-  const _ProductTile({required this.product, required this.onTap});
+class _CatalogScreenState extends State<CatalogScreen> {
+  List<Product>? _products;
 
-  final Product product;
-  final VoidCallback onTap;
+  @override
+  void initState() {
+    super.initState();
+    ProductService().getProducts().then((products) {
+      setState(() {
+        _products = products;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(child: ColoredBox(color: Color(product.swatchColorValue))),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name,
-                    style: Theme.of(context).textTheme.titleSmall,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text('\$${product.price.toStringAsFixed(2)}'),
-                ],
-              ),
-            ),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Fashion App')),
+      body: _products != null
+          ? _gridView(_products!)
+          : const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Widget _gridView(List<Product> products) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 0.72,
       ),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        final product = products[index];
+        return ProductTile(
+          product: product,
+          onTap: () => widget.onProductSelected(product),
+        );
+      },
     );
   }
 }
