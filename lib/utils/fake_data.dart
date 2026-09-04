@@ -9,7 +9,7 @@ final List<Product> fakeProducts = [
     id: 'p1',
     name: 'Classic White Tee',
     price: 24.99,
-    swatchColorValue: Colors.grey.shade200.toARGB32(),
+    swatchColorValue: Colors.indigo.shade200.toARGB32(),
     description: 'A timeless crewneck t-shirt in 100% organic cotton.',
   ),
   Product(
