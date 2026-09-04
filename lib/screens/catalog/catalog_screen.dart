@@ -2,7 +2,7 @@ import 'package:fashion_app/screens/catalog/product_tile.dart';
 import 'package:fashion_app/services/product_service.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/product.dart';
+import 'package:fashion_app/models/product.dart';
 
 /// Displays the product catalog as a grid and reports taps via
 /// [onProductSelected].
@@ -31,7 +31,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Fashion App')),
       body: _products != null
           ? _gridView(_products!)
           : const Center(child: CircularProgressIndicator()),

@@ -1,10 +1,8 @@
+import 'package:fashion_app/screens/main_page.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/theme.dart';
-import 'app_route_information_parser.dart';
-import 'app_router_delegate.dart';
+import 'package:fashion_app/utils/theme.dart';
 
-/// Root widget wiring up manual Navigator 2.0 routing for the app.
 class FashionApp extends StatefulWidget {
   const FashionApp({super.key});
 
@@ -13,16 +11,12 @@ class FashionApp extends StatefulWidget {
 }
 
 class _FashionAppState extends State<FashionApp> {
-  final _routerDelegate = AppRouterDelegate();
-  final _routeInformationParser = AppRouteInformationParser();
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'Fashion App',
       theme: AppTheme.light,
-      routerDelegate: _routerDelegate,
-      routeInformationParser: _routeInformationParser,
+      home: MainPage(),
     );
   }
 }
