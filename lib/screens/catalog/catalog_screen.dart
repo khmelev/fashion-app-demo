@@ -31,6 +31,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Catalog')),
       body: _products != null
           ? _gridView(_products!)
           : const Center(child: CircularProgressIndicator()),
