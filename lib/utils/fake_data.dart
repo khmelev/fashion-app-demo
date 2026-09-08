@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../models/product.dart';
 
-/// In-memory product catalog used to build the UI before the gRPC backend
-/// is wired up.
 final List<Product> fakeProducts = [
   Product(
     id: 'p1',

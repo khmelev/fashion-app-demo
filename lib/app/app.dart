@@ -22,6 +22,7 @@ class FashionApp extends StatefulWidget {
 class _FashionAppState extends State<FashionApp> {
   final GoRouter _router = GoRouter(
     navigatorKey: _rootNavigatorKey,
+    debugLogDiagnostics: true,
     initialLocation: '/catalog',
     routes: <RouteBase>[
       StatefulShellRoute.indexedStack(

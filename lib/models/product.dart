@@ -1,8 +1,4 @@
 /// A single product in the catalog.
-///
-/// This mirrors the shape of the product message the gRPC backend will
-/// eventually return, but stays a plain Dart class with no dependency on
-/// generated protobuf code so the UI can be built against fake data first.
 class Product {
   const Product({
     required this.id,
@@ -10,6 +6,7 @@ class Product {
     required this.price,
     required this.swatchColorValue,
     required this.description,
+    this.sizes = const [.s, .m, .l, .xl],
   });
 
   final String id;
@@ -19,4 +16,18 @@ class Product {
   /// ARGB color value used as a placeholder swatch in place of a real image.
   final int swatchColorValue;
   final String description;
+
+  final List<ProductSize> sizes;
+}
+
+class ProductSize {
+  const ProductSize({required this.id, required this.name});
+
+  final String id;
+  final String name;
+
+  static const ProductSize s = ProductSize(id: "s", name: "S");
+  static const ProductSize m = ProductSize(id: "m", name: "M");
+  static const ProductSize l = ProductSize(id: "l", name: "L");
+  static const ProductSize xl = ProductSize(id: "xl", name: "XL");
 }
