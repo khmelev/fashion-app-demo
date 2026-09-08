@@ -1,12 +1,18 @@
+import 'package:fashion_app/services/cart_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/product.dart';
 
 /// Shows full details for a single [product].
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key, required this.product});
+  const ProductDetailScreen({
+    super.key,
+    required this.product,
+    required this._cartService,
+  });
 
   final Product product;
+  final CartService _cartService;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +57,13 @@ class ProductDetailScreen extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          // Add to cart logic
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Added to cart!')));
+          _cartService
+              .addItem(product: product, size: ProductSize.m, quantity: 1)
+              .then((value) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Added to cart!')));
+              });
         },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 16),

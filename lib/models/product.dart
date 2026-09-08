@@ -30,4 +30,7 @@ class ProductSize {
   static const ProductSize m = ProductSize(id: "m", name: "M");
   static const ProductSize l = ProductSize(id: "l", name: "L");
   static const ProductSize xl = ProductSize(id: "xl", name: "XL");
+
+  @override
+  toString() => name;
 }

@@ -7,8 +7,9 @@ class Cart {
 }
 
 class CartItem {
-  CartItem({required this.product, required this.size});
+  CartItem({required this.product, required this.size, required this.quantity});
 
   final Product product;
   final ProductSize size;
+  final int quantity;
 }
