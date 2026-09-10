@@ -1,18 +1,14 @@
-import 'package:fashion_app/services/cart_service.dart';
+import 'package:fashion_app/services/cart_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/product.dart';
 
 /// Shows full details for a single [product].
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({
-    super.key,
-    required this.product,
-    required this._cartService,
-  });
+  const ProductDetailScreen({super.key, required this.product});
 
   final Product product;
-  final CartService _cartService;
 
   @override
   Widget build(BuildContext context) {
@@ -55,20 +51,27 @@ class ProductDetailScreen extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16),
       width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          _cartService
-              .addItem(product: product, size: ProductSize.m, quantity: 1)
-              .then((value) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text('Added to cart!')));
-              });
+      child: Consumer(
+        builder: (context, ref, _) {
+          return ElevatedButton(
+            onPressed: () {
+              ref
+                  .read(cartControllerProvider.notifier)
+                  .addItem(product: product, size: ProductSize.m, quantity: 1)
+                  .then((value) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Added to cart!')),
+                      );
+                    }
+                  });
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 16),
+            ),
+            child: Text('Add to Cart'),
+          );
         },
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 16),
-        ),
-        child: Text('Add to Cart'),
       ),
     );
   }

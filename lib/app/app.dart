@@ -2,7 +2,6 @@ import 'package:fashion_app/screens/cart/cart_screen.dart';
 import 'package:fashion_app/screens/catalog/catalog_screen.dart';
 import 'package:fashion_app/screens/main_screen.dart';
 import 'package:fashion_app/screens/product_detail/product_detail_screen.dart';
-import 'package:fashion_app/services/cart_service.dart';
 import 'package:fashion_app/utils/fake_data.dart';
 import 'package:flutter/material.dart';
 
@@ -46,10 +45,7 @@ class _FashionAppState extends State<FashionApp> {
                       final product = fakeProducts.firstWhere(
                         (element) => element.id == productId,
                       );
-                      return ProductDetailScreen(
-                        product: product,
-                        cartService: CartService(),
-                      );
+                      return ProductDetailScreen(product: product);
                     },
                   ),
                 ],
@@ -61,7 +57,7 @@ class _FashionAppState extends State<FashionApp> {
               GoRoute(
                 path: '/cart',
                 builder: (context, state) {
-                  return CartScreen(cartService: CartService());
+                  return CartScreen();
                 },
               ),
             ],

@@ -1,33 +1,32 @@
-import 'package:fashion_app/services/cart_service.dart';
+import 'package:fashion_app/services/cart_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key, required this._cartService});
-
-  final CartService _cartService;
+class CartScreen extends ConsumerWidget {
+  const CartScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(cartControllerProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Cart')),
-      body: ListenableBuilder(
-        listenable: _cartService,
-        builder: (context, child) {
-          return _buildCartItems();
-        },
+      body: userState.when(
+        data: (cartState) => _buildCartItems(cartState),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(child: Text('Error: $error')),
       ),
     );
   }
 
-  Widget _buildCartItems() {
-    if (_cartService.isEmpty) {
+  Widget _buildCartItems(CartState cartState) {
+    if (cartState.isEmpty) {
       return const Center(child: Text('Your cart is empty.'));
     }
     return ListView.builder(
       padding: EdgeInsets.all(16),
-      itemCount: _cartService.items.length,
+      itemCount: cartState.items.length,
       itemBuilder: (context, index) {
-        final item = _cartService.items[index];
+        final item = cartState.items[index];
         return Row(
           children: [
             SizedBox(
