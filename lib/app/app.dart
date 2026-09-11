@@ -3,9 +3,9 @@ import 'package:fashion_app/screens/catalog/catalog_screen.dart';
 import 'package:fashion_app/screens/main_screen.dart';
 import 'package:fashion_app/screens/product_detail/product_detail_screen.dart';
 import 'package:fashion_app/utils/fake_data.dart';
-import 'package:flutter/material.dart';
-
 import 'package:fashion_app/utils/theme.dart';
+
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(

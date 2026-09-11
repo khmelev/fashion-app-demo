@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fashion_app/models/cart.dart';
 import 'package:fashion_app/models/product.dart';
 import 'package:fashion_app/utils/const.dart';
@@ -25,6 +26,21 @@ class CartController extends AsyncNotifier<CartState> {
     );
   }
 
+  Future<void> changeQty({
+    required String cartItemId,
+    required int qtyChange,
+  }) async {
+    //state = const AsyncValue.loading();
+    //await Future.delayed(mockNetworkDelay);
+    state = AsyncValue.data(
+      CartState.changeQuantity(
+        currentState: state.value!,
+        cartItemId: cartItemId,
+        qtyChange: qtyChange,
+      ),
+    );
+  }
+
   bool get isEmpty => state.value!.isEmpty;
 }
 
@@ -39,7 +55,7 @@ class CartState {
     required CartState currentState,
     required Product product,
     required ProductSize size,
-    int quantity = 1,
+    required int quantity,
   }) {
     if (currentState.items.any(
       (item) => item.product.id == product.id && item.size == size,
@@ -63,6 +79,27 @@ class CartState {
         ],
       );
     }
+  }
+
+  factory CartState.changeQuantity({
+    required CartState currentState,
+    required String cartItemId,
+    int qtyChange = 1,
+  }) {
+    final updatedItems = [...currentState.items];
+    final cartItem = updatedItems.firstWhereOrNull(
+      (item) => item.id == cartItemId,
+    );
+    if (cartItem != null) {
+      int cartItemIndex = updatedItems.indexOf(cartItem);
+      final newQty = cartItem.quantity + qtyChange;
+      if (newQty > 0) {
+        updatedItems[cartItemIndex] = cartItem.updateQty(newQty: newQty);
+      } else {
+        updatedItems.removeAt(cartItemIndex);
+      }
+    }
+    return CartState(items: updatedItems);
   }
 
   List<CartItem> get items => List.unmodifiable(_items);

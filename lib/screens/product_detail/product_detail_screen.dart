@@ -1,8 +1,8 @@
 import 'package:fashion_app/services/cart_controller.dart';
+import 'package:fashion_app/models/product.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../models/product.dart';
 
 /// Shows full details for a single [product].
 class ProductDetailScreen extends StatelessWidget {
@@ -61,7 +61,10 @@ class ProductDetailScreen extends StatelessWidget {
                   .then((value) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Added to cart!')),
+                        const SnackBar(
+                          content: Text('Added to cart!'),
+                          duration: Duration(milliseconds: 500),
+                        ),
                       );
                     }
                   });
