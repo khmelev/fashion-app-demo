@@ -1,1 +1,1 @@
-const mockNetworkDelay = Duration(seconds: 1);
+const mockNetworkDelay = Duration(microseconds: 100);

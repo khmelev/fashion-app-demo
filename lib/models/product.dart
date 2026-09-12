@@ -21,16 +21,16 @@ class Product {
 }
 
 class ProductSize {
-  const ProductSize({required this.id, required this.name});
+  const ProductSize({required this.id, required this.title});
 
   final String id;
-  final String name;
+  final String title;
 
-  static const ProductSize s = ProductSize(id: "s", name: "S");
-  static const ProductSize m = ProductSize(id: "m", name: "M");
-  static const ProductSize l = ProductSize(id: "l", name: "L");
-  static const ProductSize xl = ProductSize(id: "xl", name: "XL");
+  static const ProductSize s = ProductSize(id: "s", title: "S");
+  static const ProductSize m = ProductSize(id: "m", title: "M");
+  static const ProductSize l = ProductSize(id: "l", title: "L");
+  static const ProductSize xl = ProductSize(id: "xl", title: "XL");
 
   @override
-  toString() => name;
+  toString() => title;
 }

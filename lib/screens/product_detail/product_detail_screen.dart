@@ -1,4 +1,4 @@
-import 'package:fashion_app/services/cart_controller.dart';
+import 'package:fashion_app/screens/product_detail/size_select_screen.dart';
 import 'package:fashion_app/models/product.dart';
 
 import 'package:flutter/material.dart';
@@ -55,19 +55,12 @@ class ProductDetailScreen extends StatelessWidget {
         builder: (context, ref, _) {
           return ElevatedButton(
             onPressed: () {
-              ref
-                  .read(cartControllerProvider.notifier)
-                  .addItem(product: product, size: ProductSize.m, quantity: 1)
-                  .then((value) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Added to cart!'),
-                          duration: Duration(milliseconds: 500),
-                        ),
-                      );
-                    }
-                  });
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return SizeSelectScreen(product: product);
+                },
+              );
             },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 16),
