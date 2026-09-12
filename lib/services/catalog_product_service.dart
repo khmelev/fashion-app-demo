@@ -8,6 +8,11 @@ class _ProductService {
     await Future.delayed(mockNetworkDelay);
     return fakeProducts;
   }
+
+  Future<List<Product>> getSimilarProducts(String productId) async {
+    await Future.delayed(mockNetworkDelay);
+    return fakeProducts.where((item) => item.id != productId).toList();
+  }
 }
 
 final productServiceProvider = Provider<_ProductService>(
@@ -20,3 +25,9 @@ final catalogProductProvider = FutureProvider.autoDispose<List<Product>>((
   final productService = ref.watch(productServiceProvider);
   return productService.getProducts();
 });
+
+final similarProductProvider = FutureProvider.autoDispose
+    .family<List<Product>, String>((ref, param) {
+      final productService = ref.watch(productServiceProvider);
+      return productService.getSimilarProducts(param);
+    });

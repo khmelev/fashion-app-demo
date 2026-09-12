@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../models/product.dart';
+import 'package:fashion_app/models/product.dart';
 
-final List<Product> fakeProducts = [
+final List<Product> fakeProducts = List.unmodifiable([
   Product(
     id: 'p1',
     name: 'Classic White Tee',
@@ -45,4 +45,4 @@ final List<Product> fakeProducts = [
     swatchColorValue: Colors.teal.shade300.toARGB32(),
     description: 'A chunky-knit sweater in a soft wool blend.',
   ),
-];
+]);
