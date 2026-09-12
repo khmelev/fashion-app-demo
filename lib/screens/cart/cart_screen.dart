@@ -8,10 +8,10 @@ class CartScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userState = ref.watch(cartControllerProvider);
+    final providerState = ref.watch(cartControllerProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Cart')),
-      body: userState.when(
+      body: providerState.when(
         data: (cartState) => _buildCartItems(cartState, ref),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),

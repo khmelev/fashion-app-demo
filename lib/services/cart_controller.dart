@@ -15,7 +15,7 @@ class CartController extends AsyncNotifier<CartState> {
     int quantity = 1,
   }) async {
     state = const AsyncValue.loading();
-    await Future.delayed(mockNetworkDelay);
+    await Future.delayed(mockAddToCartDelay);
     state = AsyncValue.data(
       CartState.addItem(
         currentState: state.value!,

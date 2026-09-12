@@ -1,40 +1,26 @@
 import 'package:fashion_app/screens/catalog/product_tile.dart';
-import 'package:fashion_app/services/product_service.dart';
+import 'package:fashion_app/services/catalog_product_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fashion_app/models/product.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Displays the product catalog as a grid and reports taps via
-/// [onProductSelected].
-class CatalogScreen extends StatefulWidget {
+class CatalogScreen extends ConsumerWidget {
   const CatalogScreen({super.key, required this.onProductSelected});
 
   final ValueChanged<Product> onProductSelected;
 
   @override
-  State<CatalogScreen> createState() => _CatalogScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final providerState = ref.watch(catalogProductProvider);
 
-class _CatalogScreenState extends State<CatalogScreen> {
-  List<Product>? _products;
-
-  @override
-  void initState() {
-    super.initState();
-    ProductService().getProducts().then((products) {
-      setState(() {
-        _products = products;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Catalog')),
-      body: _products != null
-          ? _gridView(_products!)
-          : const Center(child: CircularProgressIndicator()),
+      body: providerState.when(
+        data: (products) => _gridView(products),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(child: Text('Error: $error')),
+      ),
     );
   }
 
@@ -52,7 +38,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
         final product = products[index];
         return ProductTile(
           product: product,
-          onTap: () => widget.onProductSelected(product),
+          onTap: () => onProductSelected(product),
         );
       },
     );
