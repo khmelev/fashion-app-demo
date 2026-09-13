@@ -1,30 +1,38 @@
 import 'package:fashion_app/screens/product_detail/size_select_screen.dart';
 import 'package:fashion_app/models/product.dart';
-import 'package:fashion_app/services/catalog_product_service.dart';
+import 'package:fashion_app/services/product_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 /// Shows full details for a single [product].
 class ProductDetailScreen extends ConsumerWidget {
-  const ProductDetailScreen({super.key, required this.product});
+  const ProductDetailScreen({super.key, required this._productId});
 
-  final Product product;
+  final String _productId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
-      body: Column(
-        children: [
-          Expanded(child: _productDetails(context, ref)),
-          _addToCartButton(context),
-        ],
-      ),
+    final providerState = ref.watch(productProvider(_productId));
+    return providerState.when(
+      data: (product) {
+        return Scaffold(
+          appBar: AppBar(title: Text(product.name)),
+          body: Column(
+            children: [
+              Expanded(child: _productDetails(context, product, ref)),
+              _addToCartButton(context),
+            ],
+          ),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => Center(child: Text('Error: $error')),
     );
   }
 
-  Widget _productDetails(BuildContext context, WidgetRef ref) {
+  Widget _productDetails(BuildContext context, Product product, WidgetRef ref) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -51,7 +59,7 @@ class ProductDetailScreen extends ConsumerWidget {
   }
 
   Widget _similarProducts(BuildContext context, WidgetRef ref) {
-    final providerState = ref.watch(similarProductProvider(product.id));
+    final providerState = ref.watch(similarProductsProvider(_productId));
     return providerState.when(
       data: (similarProducts) {
         return Column(
@@ -74,7 +82,10 @@ class ProductDetailScreen extends ConsumerWidget {
                     padding: EdgeInsets.only(right: 12),
                     child: GestureDetector(
                       onTap: () {
-                        // TODO
+                        GoRouter.of(context).pushNamed(
+                          'product_detail',
+                          pathParameters: {'id': item.id},
+                        );
                       },
                       child: Container(
                         width: 50,
@@ -105,7 +116,7 @@ class ProductDetailScreen extends ConsumerWidget {
           showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
-              return SizeSelectScreen(product: product);
+              return SizeSelectScreen(productId: _productId);
             },
           );
         },

@@ -2,7 +2,6 @@ import 'package:fashion_app/screens/cart/cart_screen.dart';
 import 'package:fashion_app/screens/catalog/catalog_screen.dart';
 import 'package:fashion_app/screens/main_screen.dart';
 import 'package:fashion_app/screens/product_detail/product_detail_screen.dart';
-import 'package:fashion_app/utils/fake_data.dart';
 import 'package:fashion_app/utils/theme.dart';
 
 import 'package:flutter/material.dart';
@@ -33,22 +32,14 @@ class _FashionAppState extends State<FashionApp> {
             routes: <RouteBase>[
               GoRoute(
                 path: '/catalog',
-                builder: (context, state) => CatalogScreen(
-                  onProductSelected: (product) =>
-                      GoRouter.of(context).go('/catalog/product/${product.id}'),
-                ),
-                routes: <RouteBase>[
-                  GoRoute(
-                    path: 'product/:id',
-                    builder: (context, state) {
-                      final productId = state.pathParameters['id']!;
-                      final product = fakeProducts.firstWhere(
-                        (element) => element.id == productId,
-                      );
-                      return ProductDetailScreen(product: product);
-                    },
-                  ),
-                ],
+                name: 'catalog',
+                builder: (context, state) => CatalogScreen(),
+              ),
+              GoRoute(
+                path: '/product/:id',
+                name: 'product_detail',
+                builder: (context, state) =>
+                    ProductDetailScreen(productId: state.pathParameters['id']!),
               ),
             ],
           ),

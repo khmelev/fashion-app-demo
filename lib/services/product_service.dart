@@ -13,21 +13,31 @@ class _ProductService {
     await Future.delayed(mockNetworkDelay);
     return fakeProducts.where((item) => item.id != productId).toList();
   }
+
+  Future<Product> getProduct(String productId) async {
+    await Future.delayed(mockNetworkDelay);
+    return fakeProducts.firstWhere((item) => item.id == productId);
+  }
 }
 
 final productServiceProvider = Provider<_ProductService>(
   (ref) => _ProductService(),
 );
 
-final catalogProductProvider = FutureProvider.autoDispose<List<Product>>((
+final catalogProductsProvider = FutureProvider.autoDispose<List<Product>>((
   ref,
 ) async {
-  final productService = ref.watch(productServiceProvider);
-  return productService.getProducts();
+  return ref.read(productServiceProvider).getProducts();
 });
 
-final similarProductProvider = FutureProvider.autoDispose
+final similarProductsProvider = FutureProvider.autoDispose
     .family<List<Product>, String>((ref, param) {
-      final productService = ref.watch(productServiceProvider);
-      return productService.getSimilarProducts(param);
+      return ref.read(productServiceProvider).getSimilarProducts(param);
     });
+
+final productProvider = FutureProvider.autoDispose.family<Product, String>((
+  ref,
+  param,
+) {
+  return ref.read(productServiceProvider).getProduct(param);
+});

@@ -1,18 +1,19 @@
-import 'package:fashion_app/models/product.dart';
 import 'package:fashion_app/services/cart_controller.dart';
+import 'package:fashion_app/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SizeSelectScreen extends StatelessWidget {
-  const SizeSelectScreen({super.key, required this._product});
+class SizeSelectScreen extends ConsumerWidget {
+  const SizeSelectScreen({super.key, required this._productId});
 
-  final Product _product;
+  final String _productId;
 
   @override
-  Widget build(BuildContext context) {
-    final sizes = _product.sizes;
-    return Consumer(
-      builder: (context, ref, _) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final providerState = ref.watch(productProvider(_productId));
+    return providerState.when(
+      data: (product) {
+        final sizes = product.sizes;
         return Padding(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -38,7 +39,7 @@ class SizeSelectScreen extends StatelessWidget {
                           ref
                               .read(cartControllerProvider.notifier)
                               .addItem(
-                                product: _product,
+                                product: product,
                                 size: size,
                                 quantity: 1,
                               )
@@ -73,6 +74,8 @@ class SizeSelectScreen extends StatelessWidget {
           ),
         );
       },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => Center(child: Text('Error: $error')),
     );
   }
 }
