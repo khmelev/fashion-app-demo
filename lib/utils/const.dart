@@ -1,2 +1,2 @@
-const mockNetworkDelay = Duration(seconds: 1);
-const mockAddToCartDelay = Duration(microseconds: 100);
+const mockLongDelay = Duration(seconds: 1);
+const mockShortDelay = Duration(microseconds: 100);

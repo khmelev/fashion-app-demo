@@ -5,17 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class _ProductService {
   Future<List<Product>> getProducts() async {
-    await Future.delayed(mockNetworkDelay);
+    await Future.delayed(mockLongDelay);
     return fakeProducts;
   }
 
   Future<List<Product>> getSimilarProducts(String productId) async {
-    await Future.delayed(mockNetworkDelay);
+    await Future.delayed(mockLongDelay);
     return fakeProducts.where((item) => item.id != productId).toList();
   }
 
   Future<Product> getProduct(String productId) async {
-    await Future.delayed(mockNetworkDelay);
+    await Future.delayed(mockLongDelay);
     return fakeProducts.firstWhere((item) => item.id == productId);
   }
 }

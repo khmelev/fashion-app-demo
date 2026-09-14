@@ -13,11 +13,7 @@ void main() {
 
     Product? tapped;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: CatalogScreen(onProductSelected: (product) => tapped = product),
-      ),
-    );
+    await tester.pumpWidget(MaterialApp(home: CatalogScreen()));
 
     for (final product in fakeProducts) {
       expect(find.text(product.name), findsOneWidget);

@@ -2,6 +2,7 @@ import 'package:fashion_app/screens/cart/cart_screen.dart';
 import 'package:fashion_app/screens/catalog/catalog_screen.dart';
 import 'package:fashion_app/screens/main_screen.dart';
 import 'package:fashion_app/screens/product_detail/product_detail_screen.dart';
+import 'package:fashion_app/screens/profile/profile_container_screen.dart';
 import 'package:fashion_app/utils/theme.dart';
 
 import 'package:flutter/material.dart';
@@ -45,11 +46,14 @@ class _FashionAppState extends State<FashionApp> {
           ),
           StatefulShellBranch(
             routes: <RouteBase>[
+              GoRoute(path: '/cart', builder: (context, state) => CartScreen()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
               GoRoute(
-                path: '/cart',
-                builder: (context, state) {
-                  return CartScreen();
-                },
+                path: '/profile',
+                builder: (context, state) => ProfileContainerScreen(),
               ),
             ],
           ),
