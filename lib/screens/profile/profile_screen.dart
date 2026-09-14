@@ -7,19 +7,35 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(customerControllerProvider).isLoading;
+    final email =
+        ref.watch(customerControllerProvider).value is AuthorizedCustomerState
+        ? (ref.watch(customerControllerProvider).value
+                  as AuthorizedCustomerState)
+              .email
+        : 'Unknown';
     return Scaffold(
-      appBar: AppBar(title: const Text('Hello, User42!')),
+      appBar: AppBar(title: Text('Profile: $email')),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Authorized profile'),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                ref.read(customerControllerProvider.notifier).logout();
-              },
-              child: Text('Logout'),
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      ref.read(customerControllerProvider.notifier).logout();
+                    },
+              child: isLoading
+                  ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : Text('Logout'),
             ),
           ],
         ),

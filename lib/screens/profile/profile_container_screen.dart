@@ -10,9 +10,7 @@ class ProfileContainerScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isAuthorized =
-        ref.watch(customerControllerProvider).value?.isAuthorized == true;
-    if (isAuthorized) {
+    if (ref.watch(customerControllerProvider).value!.isAutorized()) {
       return ProfileScreen();
     } else {
       return LoginScreen();

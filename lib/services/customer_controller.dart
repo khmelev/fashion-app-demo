@@ -5,35 +5,51 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CustomerController extends AsyncNotifier<CustomerState> {
   @override
-  Future<CustomerState> build() async => CustomerState(isAuthorized: false);
+  Future<CustomerState> build() async => UnauthorizedCustomerState.instance;
 
   Future<void> authorize({
     required String email,
     required String password,
   }) async {
-    if (state.value?.isAuthorized == true) {
+    if (state.value is AuthorizedCustomerState) {
       return;
     }
     state = const AsyncValue.loading();
     await Future.delayed(mockLongDelay);
-    final isAuthorized = email.isNotEmpty && password.isNotEmpty;
-    state = AsyncValue.data(CustomerState(isAuthorized: isAuthorized));
+    final isCredentialsValid = email.isNotEmpty && password.isNotEmpty;
+    if (isCredentialsValid) {
+      state = AsyncValue.data(AuthorizedCustomerState(email: email));
+    } else {
+      state = AsyncValue.data(UnauthorizedCustomerState.instance);
+    }
   }
 
   Future<void> logout() async {
-    if (state.value?.isAuthorized == false) {
+    if (state.value is UnauthorizedCustomerState) {
       return;
     }
     state = const AsyncValue.loading();
     await Future.delayed(mockLongDelay);
-    state = AsyncValue.data(CustomerState(isAuthorized: false));
+    state = AsyncValue.data(UnauthorizedCustomerState.instance);
   }
 }
 
-class CustomerState {
-  const CustomerState({required this.isAuthorized});
+abstract class CustomerState {
+  const CustomerState();
 
-  final bool isAuthorized;
+  bool isAutorized() => this is AuthorizedCustomerState;
+}
+
+class UnauthorizedCustomerState extends CustomerState {
+  const UnauthorizedCustomerState();
+
+  static final instance = const UnauthorizedCustomerState();
+}
+
+class AuthorizedCustomerState extends CustomerState {
+  AuthorizedCustomerState({required this.email});
+
+  final String email;
 }
 
 final customerControllerProvider =
