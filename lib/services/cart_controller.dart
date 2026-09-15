@@ -1,13 +1,28 @@
 import 'package:collection/collection.dart';
+
 import 'package:fashion_app/models/cart.dart';
 import 'package:fashion_app/models/product.dart';
+import 'package:fashion_app/services/customer_controller.dart';
 import 'package:fashion_app/utils/const.dart';
+import 'package:fashion_app/utils/fake_data.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CartController extends AsyncNotifier<CartState> {
   @override
-  Future<CartState> build() async => CartState.empty();
+  Future<CartState> build() async {
+    if (ref.watch(customerControllerProvider).value.isAuthorized) {
+      return CartState(
+        items: [
+          CartItem(product: fakeProducts[0], size: .m, quantity: 1),
+          CartItem(product: fakeProducts[1], size: .s, quantity: 1),
+          CartItem(product: fakeProducts[2], size: .l, quantity: 2),
+        ],
+      );
+    } else {
+      return CartState.empty();
+    }
+  }
 
   Future<void> addItem({
     required Product product,

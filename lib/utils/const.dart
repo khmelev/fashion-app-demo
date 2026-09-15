@@ -1,2 +1,2 @@
-const mockLongDelay = Duration(seconds: 1);
-const mockShortDelay = Duration(microseconds: 100);
+const mockLongDelay = Duration(milliseconds: 500);
+const mockShortDelay = Duration(milliseconds: 100);

@@ -6,20 +6,21 @@ import 'package:fashion_app/screens/profile/profile_container_screen.dart';
 import 'package:fashion_app/utils/theme.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'root',
 );
 
-class FashionApp extends StatefulWidget {
+class FashionApp extends ConsumerStatefulWidget {
   const FashionApp({super.key});
 
   @override
-  State<FashionApp> createState() => _FashionAppState();
+  ConsumerState<FashionApp> createState() => _FashionAppState();
 }
 
-class _FashionAppState extends State<FashionApp> {
+class _FashionAppState extends ConsumerState<FashionApp> {
   final GoRouter _router = GoRouter(
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
@@ -67,6 +68,10 @@ class _FashionAppState extends State<FashionApp> {
     return MaterialApp.router(
       title: 'Fashion App',
       theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ref.watch(themeNotifierProvider).isDark
+          ? ThemeMode.dark
+          : ThemeMode.light,
       routerConfig: _router,
     );
   }

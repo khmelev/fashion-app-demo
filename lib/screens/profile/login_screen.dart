@@ -1,4 +1,5 @@
 import 'package:fashion_app/services/customer_controller.dart';
+import 'package:fashion_app/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,8 +14,50 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  String? _emailErrorMessage;
+  String? _passwordErrorMessage;
+
   // Form key for validation
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _isEmailHasValidPattern(String email) {
+    final RegExp emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailRegex.hasMatch(email);
+  }
+
+  bool _isEmailValid() {
+    final email = _emailController.text.trim();
+
+    setState(() {
+      if (email.isEmpty) {
+        _emailErrorMessage = 'Email cannot be empty';
+      } else if (!_isEmailHasValidPattern(email)) {
+        _emailErrorMessage = 'Please enter a valid email address';
+      } else {
+        _emailErrorMessage = null;
+      }
+    });
+
+    return _emailErrorMessage == null;
+  }
+
+  bool _isPasswordValid() {
+    final password = _passwordController.text.trim();
+
+    setState(() {
+      if (password.isEmpty) {
+        _passwordErrorMessage = 'Password cannot be empty';
+      } else if (password.length < 6) {
+        _passwordErrorMessage = 'Password must be at least 6 symbols';
+      } else {
+        _passwordErrorMessage = null;
+      }
+    });
+
+    return _passwordErrorMessage == null;
+  }
 
   @override
   void dispose() {
@@ -27,8 +70,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(customerControllerProvider).isLoading;
+    final isDark = ref.watch(themeNotifierProvider).isDark;
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(
+        title: const Text('Login'),
+        actions: [
+          IconButton(
+            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+            onPressed: () {
+              ref.read(themeNotifierProvider.notifier).toggleTheme();
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsetsGeometry.all(16),
         child: Form(
@@ -45,6 +99,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   labelText: 'Email',
                   hintText: 'Enter your email',
                   prefixIcon: Icon(Icons.email),
+                  errorText: _emailErrorMessage,
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 12,
@@ -68,6 +123,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   labelText: 'Password',
                   hintText: 'Enter your password',
                   prefixIcon: Icon(Icons.lock),
+                  errorText: _passwordErrorMessage,
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 12,
@@ -88,12 +144,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 onPressed: isLoading
                     ? null
                     : () {
-                        ref
-                            .read(customerControllerProvider.notifier)
-                            .authorize(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                            );
+                        if (_isEmailValid() && _isPasswordValid()) {
+                          ref
+                              .read(customerControllerProvider.notifier)
+                              .authorize(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              );
+                        }
                       },
                 child: isLoading
                     ? SizedBox(

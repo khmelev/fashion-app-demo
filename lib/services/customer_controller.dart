@@ -36,8 +36,10 @@ class CustomerController extends AsyncNotifier<CustomerState> {
 
 abstract class CustomerState {
   const CustomerState();
+}
 
-  bool isAutorized() => this is AuthorizedCustomerState;
+extension CustomerStateExtension on CustomerState? {
+  bool get isAuthorized => this is AuthorizedCustomerState;
 }
 
 class UnauthorizedCustomerState extends CustomerState {
