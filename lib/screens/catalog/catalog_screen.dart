@@ -1,4 +1,4 @@
-import 'package:fashion_app/screens/catalog/product_tile.dart';
+import 'package:fashion_app/screens/catalog/catalog_product_tile.dart';
 import 'package:fashion_app/services/product_service.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +17,25 @@ class CatalogScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text('Catalog')),
       body: providerState.when(
         data: (products) => _gridView(products),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => _skeletons(),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
       ),
+    );
+  }
+
+  Widget _skeletons() {
+    return GridView.builder(
+      padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 0.72,
+      ),
+      itemCount: 12,
+      itemBuilder: (context, index) {
+        return CatalogProductSkeleton();
+      },
     );
   }
 
@@ -35,9 +51,11 @@ class CatalogScreen extends ConsumerWidget {
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
-        return ProductTile(
+        return CatalogProductTile(
           product: product,
-          onTap: () => GoRouter.of(context).pushNamed('product_detail', pathParameters: {'id': product.id}),
+          onTap: () => GoRouter.of(
+            context,
+          ).pushNamed('product_detail', pathParameters: {'id': product.id}),
         );
       },
     );

@@ -10,12 +10,12 @@ class _ProductService {
   }
 
   Future<List<Product>> getSimilarProducts(String productId) async {
-    await Future.delayed(mockLongDelay);
+    await Future.delayed(mockMiddleDelay);
     return fakeProducts.where((item) => item.id != productId).toList();
   }
 
   Future<Product> getProduct(String productId) async {
-    await Future.delayed(mockLongDelay);
+    await Future.delayed(mockMiddleDelay);
     return fakeProducts.firstWhere((item) => item.id == productId);
   }
 }
