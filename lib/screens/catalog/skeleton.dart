@@ -33,7 +33,6 @@ class _AnimatedSkeletonState extends State<AnimatedSkeleton>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Rebuild animation when theme changes
     _animationController.reset();
     _setupColorAnimation();
     _animationController.repeat(reverse: true);

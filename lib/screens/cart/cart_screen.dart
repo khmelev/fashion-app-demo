@@ -12,22 +12,70 @@ class CartScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Cart')),
       body: providerState.when(
-        data: (cartState) => _buildCartItems(cartState, ref),
+        data: (cartState) => cartState.isEmpty
+            ? const Center(child: Text('Your cart is empty.'))
+            : CartItemsWidget(items: cartState.items),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
       ),
     );
   }
+}
 
-  Widget _buildCartItems(CartState cartState, WidgetRef ref) {
-    if (cartState.isEmpty) {
-      return const Center(child: Text('Your cart is empty.'));
+class CartItemsWidget extends ConsumerStatefulWidget {
+  final List<CartItem> _items;
+
+  const CartItemsWidget({super.key, required this._items});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _CartItemsState();
+}
+
+class _CartItemsState extends ConsumerState<CartItemsWidget> {
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+
+  @override
+  void didUpdateWidget(covariant CartItemsWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    final addedItems = widget._items
+        .where((item) => !oldWidget._items.contains(item))
+        .toList();
+
+    for (final addedItem in addedItems) {
+      final index = widget._items.indexOf(addedItem);
+      _listKey.currentState?.insertItem(index);
     }
-    return ListView.builder(
-      itemCount: cartState.items.length,
-      itemBuilder: (context, index) {
-        final item = cartState.items[index];
-        return ListTile(
+
+    final removedItems = oldWidget._items
+        .where((item) => !widget._items.contains(item))
+        .toList();
+
+    for (final removedItem in removedItems) {
+      final index = oldWidget._items.indexOf(removedItem);
+      _listKey.currentState?.removeItem(index, (context, animation) {
+        return _buildItem(removedItem, ref, animation);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedList(
+      key: _listKey,
+      initialItemCount: widget._items.length,
+      itemBuilder: (context, index, animation) {
+        return _buildItem(widget._items[index], ref, animation);
+      },
+    );
+  }
+
+  Widget _buildItem(CartItem item, WidgetRef ref, Animation<double> animation) {
+    return FadeTransition(
+      opacity: animation,
+      child: SizeTransition(
+        sizeFactor: animation,
+        child: ListTile(
           leading: SizedBox(
             width: 50,
             height: 50,
@@ -36,8 +84,8 @@ class CartScreen extends ConsumerWidget {
           title: Text(item.product.name),
           subtitle: Text('Size: ${item.size}'),
           trailing: _quantityControl(item, ref),
-        );
-      },
+        ),
+      ),
     );
   }
 
