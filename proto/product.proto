@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package fashion;
+
+option go_package = "fashion-grpc/proto";
+
+// ProductService lets clients browse the fashion catalog.
+service ProductService {
+  // ListProducts returns a fixed catalog of products.
+  rpc ListProducts (ListProductsRequest) returns (ListProductsResponse);
+}
+
+// ListProductsRequest is currently empty; it exists so the RPC
+// signature can grow later (e.g. filters, pagination) without
+// breaking the API.
+message ListProductsRequest {}
+
+message ListProductsResponse {
+  repeated Product products = 1;
+}
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string category = 3;      // e.g. "t-shirt", "pullover", "dress"
+  string brand = 4;
+  double price = 5;
+  string currency = 6;      // e.g. "EUR"
+  repeated string sizes = 7; // e.g. ["S", "M", "L"]
+}

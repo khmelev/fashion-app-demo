@@ -1,6 +1,6 @@
 import 'package:fashion_app/screens/product_detail/size_select_screen.dart';
 import 'package:fashion_app/models/product.dart';
-import 'package:fashion_app/services/product_service.dart';
+import 'package:fashion_app/services/product_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

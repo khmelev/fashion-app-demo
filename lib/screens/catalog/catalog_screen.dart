@@ -1,5 +1,5 @@
 import 'package:fashion_app/screens/catalog/catalog_product_tile.dart';
-import 'package:fashion_app/services/product_service.dart';
+import 'package:fashion_app/services/product_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fashion_app/models/product.dart';
