@@ -41,12 +41,38 @@ class ProductServiceClient extends $grpc.Client {
     return $createUnaryCall(_$listProducts, request, options: options);
   }
 
+  /// GetProduct returns a single product by id.
+  $grpc.ResponseFuture<$0.Product> getProduct(
+    $0.GetProductRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getProduct, request, options: options);
+  }
+
+  /// GetSimilar returns up to 10 products other than the given id.
+  $grpc.ResponseFuture<$0.ListProductsResponse> getSimilar(
+    $0.GetProductRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getSimilar, request, options: options);
+  }
+
   // method descriptors
 
   static final _$listProducts =
       $grpc.ClientMethod<$0.ListProductsRequest, $0.ListProductsResponse>(
           '/fashion.ProductService/ListProducts',
           ($0.ListProductsRequest value) => value.writeToBuffer(),
+          $0.ListProductsResponse.fromBuffer);
+  static final _$getProduct =
+      $grpc.ClientMethod<$0.GetProductRequest, $0.Product>(
+          '/fashion.ProductService/GetProduct',
+          ($0.GetProductRequest value) => value.writeToBuffer(),
+          $0.Product.fromBuffer);
+  static final _$getSimilar =
+      $grpc.ClientMethod<$0.GetProductRequest, $0.ListProductsResponse>(
+          '/fashion.ProductService/GetSimilar',
+          ($0.GetProductRequest value) => value.writeToBuffer(),
           $0.ListProductsResponse.fromBuffer);
 }
 
@@ -64,6 +90,22 @@ abstract class ProductServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.ListProductsRequest.fromBuffer(value),
             ($0.ListProductsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetProductRequest, $0.Product>(
+        'GetProduct',
+        getProduct_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.GetProductRequest.fromBuffer(value),
+        ($0.Product value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.GetProductRequest, $0.ListProductsResponse>(
+            'GetSimilar',
+            getSimilar_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.GetProductRequest.fromBuffer(value),
+            ($0.ListProductsResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ListProductsResponse> listProducts_Pre(
@@ -74,4 +116,20 @@ abstract class ProductServiceBase extends $grpc.Service {
 
   $async.Future<$0.ListProductsResponse> listProducts(
       $grpc.ServiceCall call, $0.ListProductsRequest request);
+
+  $async.Future<$0.Product> getProduct_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.GetProductRequest> $request) async {
+    return getProduct($call, await $request);
+  }
+
+  $async.Future<$0.Product> getProduct(
+      $grpc.ServiceCall call, $0.GetProductRequest request);
+
+  $async.Future<$0.ListProductsResponse> getSimilar_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.GetProductRequest> $request) async {
+    return getSimilar($call, await $request);
+  }
+
+  $async.Future<$0.ListProductsResponse> getSimilar(
+      $grpc.ServiceCall call, $0.GetProductRequest request);
 }

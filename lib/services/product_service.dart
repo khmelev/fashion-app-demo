@@ -2,7 +2,6 @@ import 'package:fashion_app/generated/product.pbgrpc.dart' as pb;
 import 'package:fashion_app/models/product.dart';
 import 'package:fashion_app/utils/const.dart';
 import 'package:fashion_app/utils/fake_data.dart';
-import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
@@ -23,7 +22,10 @@ class _GrpcProductService implements ProductService {
     _channel = ClientChannel(
       host,
       port: port,
-      options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
+      options: const ChannelOptions(
+        credentials: ChannelCredentials.insecure(),
+        connectTimeout: Duration(seconds: 2),
+      ),
     );
 
     _client = pb.ProductServiceClient(_channel);
@@ -31,32 +33,46 @@ class _GrpcProductService implements ProductService {
 
   @override
   Future<List<Product>> getProducts() async {
-    try {
-      final response = await _client.listProducts(pb.ListProductsRequest());
-      return response.products.map((pbProduct) {
-        return Product(
-          id: pbProduct.id,
-          name: pbProduct.name,
-          description: pbProduct.category,
-          price: pbProduct.price,
-          swatchColorValue: Colors.blue.shade700.toARGB32(),
-        );
-      }).toList();
-    } catch (e) {
-      throw Exception('Failed to fetch products: $e');
-    }
+    final response = await _client.listProducts(pb.ListProductsRequest());
+    return response.products.map((pbProduct) {
+      return Product(
+        id: pbProduct.id,
+        name: pbProduct.name,
+        description: pbProduct.category,
+        price: pbProduct.price,
+        swatchColorValue: int.parse(pbProduct.color),
+      );
+    }).toList();
   }
 
   @override
-  Future<Product> getProduct(String productId) {
-    // TODO: implement getProduct
-    throw UnimplementedError();
+  Future<Product> getProduct(String productId) async {
+    final product = await _client.getProduct(
+      pb.GetProductRequest(productId: productId),
+    );
+    return Product(
+      id: product.id,
+      name: product.name,
+      description: product.category,
+      price: product.price,
+      swatchColorValue: int.parse(product.color),
+    );
   }
 
   @override
-  Future<List<Product>> getSimilarProducts(String productId) {
-    // TODO: implement getSimilarProducts
-    throw UnimplementedError();
+  Future<List<Product>> getSimilarProducts(String productId) async {
+    final response = await _client.getSimilar(
+      pb.GetProductRequest(productId: productId),
+    );
+    return response.products.map((pbProduct) {
+      return Product(
+        id: pbProduct.id,
+        name: pbProduct.name,
+        description: pbProduct.category,
+        price: pbProduct.price,
+        swatchColorValue: int.parse(pbProduct.color),
+      );
+    }).toList();
   }
 
   Future<void> shutdown() async {

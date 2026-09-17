@@ -8,6 +8,10 @@ option go_package = "fashion-grpc/proto";
 service ProductService {
   // ListProducts returns a fixed catalog of products.
   rpc ListProducts (ListProductsRequest) returns (ListProductsResponse);
+  // GetProduct returns a single product by id.
+  rpc GetProduct (GetProductRequest) returns (Product);
+  // GetSimilar returns up to 10 products other than the given id.
+  rpc GetSimilar (GetProductRequest) returns (ListProductsResponse);
 }
 
 // ListProductsRequest is currently empty; it exists so the RPC
@@ -19,6 +23,10 @@ message ListProductsResponse {
   repeated Product products = 1;
 }
 
+message GetProductRequest {
+  string product_id = 1;
+}
+
 message Product {
   string id = 1;
   string name = 2;
@@ -27,4 +35,5 @@ message Product {
   double price = 5;
   string currency = 6;      // e.g. "EUR"
   repeated string sizes = 7; // e.g. ["S", "M", "L"]
+  string color = 8;          // ARGB hex, e.g. "0xFF3F51B5"
 }

@@ -34,7 +34,7 @@ class ProductDetailScreen extends ConsumerWidget {
 
   Widget _productDetails(BuildContext context, Product product, WidgetRef ref) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,8 +49,6 @@ class ProductDetailScreen extends ConsumerWidget {
             '\$${product.price.toStringAsFixed(2)}',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 16),
-          Text(product.description),
           const SizedBox(height: 16),
           _similarProducts(context, ref),
         ],

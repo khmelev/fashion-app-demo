@@ -44,6 +44,18 @@ final $typed_data.Uint8List listProductsResponseDescriptor = $convert.base64Deco
     'ChRMaXN0UHJvZHVjdHNSZXNwb25zZRIsCghwcm9kdWN0cxgBIAMoCzIQLmZhc2hpb24uUHJvZH'
     'VjdFIIcHJvZHVjdHM=');
 
+@$core.Deprecated('Use getProductRequestDescriptor instead')
+const GetProductRequest$json = {
+  '1': 'GetProductRequest',
+  '2': [
+    {'1': 'product_id', '3': 1, '4': 1, '5': 9, '10': 'productId'},
+  ],
+};
+
+/// Descriptor for `GetProductRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getProductRequestDescriptor = $convert.base64Decode(
+    'ChFHZXRQcm9kdWN0UmVxdWVzdBIdCgpwcm9kdWN0X2lkGAEgASgJUglwcm9kdWN0SWQ=');
+
 @$core.Deprecated('Use productDescriptor instead')
 const Product$json = {
   '1': 'Product',
@@ -55,6 +67,7 @@ const Product$json = {
     {'1': 'price', '3': 5, '4': 1, '5': 1, '10': 'price'},
     {'1': 'currency', '3': 6, '4': 1, '5': 9, '10': 'currency'},
     {'1': 'sizes', '3': 7, '4': 3, '5': 9, '10': 'sizes'},
+    {'1': 'color', '3': 8, '4': 1, '5': 9, '10': 'color'},
   ],
 };
 
@@ -63,4 +76,4 @@ final $typed_data.Uint8List productDescriptor = $convert.base64Decode(
     'CgdQcm9kdWN0Eg4KAmlkGAEgASgJUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEhoKCGNhdGVnb3'
     'J5GAMgASgJUghjYXRlZ29yeRIUCgVicmFuZBgEIAEoCVIFYnJhbmQSFAoFcHJpY2UYBSABKAFS'
     'BXByaWNlEhoKCGN1cnJlbmN5GAYgASgJUghjdXJyZW5jeRIUCgVzaXplcxgHIAMoCVIFc2l6ZX'
-    'M=');
+    'MSFAoFY29sb3IYCCABKAlSBWNvbG9y');

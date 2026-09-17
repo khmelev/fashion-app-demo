@@ -106,6 +106,60 @@ class ListProductsResponse extends $pb.GeneratedMessage {
   $pb.PbList<Product> get products => $_getList(0);
 }
 
+class GetProductRequest extends $pb.GeneratedMessage {
+  factory GetProductRequest({
+    $core.String? productId,
+  }) {
+    final result = create();
+    if (productId != null) result.productId = productId;
+    return result;
+  }
+
+  GetProductRequest._();
+
+  factory GetProductRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetProductRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetProductRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'fashion'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'productId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetProductRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetProductRequest copyWith(void Function(GetProductRequest) updates) =>
+      super.copyWith((message) => updates(message as GetProductRequest))
+          as GetProductRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetProductRequest create() => GetProductRequest._();
+  @$core.override
+  GetProductRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static GetProductRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetProductRequest>(create);
+  static GetProductRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get productId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set productId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasProductId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearProductId() => $_clearField(1);
+}
+
 class Product extends $pb.GeneratedMessage {
   factory Product({
     $core.String? id,
@@ -115,6 +169,7 @@ class Product extends $pb.GeneratedMessage {
     $core.double? price,
     $core.String? currency,
     $core.Iterable<$core.String>? sizes,
+    $core.String? color,
   }) {
     final result = create();
     if (id != null) result.id = id;
@@ -124,6 +179,7 @@ class Product extends $pb.GeneratedMessage {
     if (price != null) result.price = price;
     if (currency != null) result.currency = currency;
     if (sizes != null) result.sizes.addAll(sizes);
+    if (color != null) result.color = color;
     return result;
   }
 
@@ -147,6 +203,7 @@ class Product extends $pb.GeneratedMessage {
     ..aD(5, _omitFieldNames ? '' : 'price')
     ..aOS(6, _omitFieldNames ? '' : 'currency')
     ..pPS(7, _omitFieldNames ? '' : 'sizes')
+    ..aOS(8, _omitFieldNames ? '' : 'color')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -223,6 +280,15 @@ class Product extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(7)
   $pb.PbList<$core.String> get sizes => $_getList(6);
+
+  @$pb.TagNumber(8)
+  $core.String get color => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set color($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasColor() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearColor() => $_clearField(8);
 }
 
 const $core.bool _omitFieldNames =

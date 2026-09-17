@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:fashion_app/models/cart.dart';
 import 'package:fashion_app/models/product.dart';
@@ -6,12 +7,14 @@ import 'package:fashion_app/services/customer_controller.dart';
 import 'package:fashion_app/utils/const.dart';
 import 'package:fashion_app/utils/fake_data.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 class CartController extends AsyncNotifier<CartState> {
   @override
   Future<CartState> build() async {
-    if (ref.watch(customerControllerProvider).value.isAuthorized) {
+    final isAuthorized = ref
+        .read(customerControllerProvider)
+        .value
+        .isAuthorized;
+    if (isAuthorized) {
       return CartState(
         items: [
           CartItem(product: fakeProducts[0], size: .m, quantity: 1),
@@ -33,7 +36,7 @@ class CartController extends AsyncNotifier<CartState> {
     await Future.delayed(mockShortDelay);
     state = AsyncValue.data(
       CartState.addItem(
-        currentState: state.value!,
+        currentState: state.value,
         product: product,
         size: size,
         quantity: quantity,
@@ -45,8 +48,6 @@ class CartController extends AsyncNotifier<CartState> {
     required String cartItemId,
     required int qtyChange,
   }) async {
-    //state = const AsyncValue.loading();
-    //await Future.delayed(mockNetworkDelay);
     state = AsyncValue.data(
       CartState.changeQuantity(
         currentState: state.value!,
@@ -67,15 +68,17 @@ class CartState {
   factory CartState.empty() => CartState(items: []);
 
   factory CartState.addItem({
-    required CartState currentState,
+    required CartState? currentState,
     required Product product,
     required ProductSize size,
     required int quantity,
   }) {
-    if (currentState.items.any(
-      (item) => item.product.id == product.id && item.size == size,
-    )) {
-      final updatedItems = currentState.items.map((item) {
+    final items = currentState?.items ?? [];
+    if (items.isNotEmpty &&
+        items.any(
+          (item) => item.product.id == product.id && item.size == size,
+        )) {
+      final updatedItems = items.map((item) {
         if (item.product.id == product.id && item.size == size) {
           return CartItem(
             product: item.product,
@@ -89,7 +92,7 @@ class CartState {
     } else {
       return CartState(
         items: [
-          ...currentState.items,
+          ...items,
           CartItem(product: product, size: size, quantity: quantity),
         ],
       );
