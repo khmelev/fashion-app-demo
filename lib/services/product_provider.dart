@@ -5,13 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final catalogProductsProvider = FutureProvider.autoDispose<List<Product>>((
   ref,
 ) async {
-  final service = await ref.watch(mockProductServiceProvider.future);
-  return service.getProducts();
+  final service = await ref.watch(productServiceProvider.future);
+  return await service.getProducts();
 });
 
 final similarProductsProvider = FutureProvider.autoDispose
     .family<List<Product>, String>((ref, param) async {
-      final service = await ref.watch(mockProductServiceProvider.future);
+      final service = await ref.watch(productServiceProvider.future);
       return service.getSimilarProducts(param);
     });
 
@@ -19,6 +19,6 @@ final productProvider = FutureProvider.autoDispose.family<Product, String>((
   ref,
   param,
 ) async {
-  final service = await ref.watch(mockProductServiceProvider.future);
+  final service = await ref.watch(productServiceProvider.future);
   return service.getProduct(param);
 });

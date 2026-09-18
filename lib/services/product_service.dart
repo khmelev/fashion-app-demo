@@ -22,10 +22,7 @@ class _GrpcProductService implements ProductService {
     _channel = ClientChannel(
       host,
       port: port,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
-        connectTimeout: Duration(seconds: 2),
-      ),
+      options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
 
     _client = pb.ProductServiceClient(_channel);
@@ -100,7 +97,7 @@ class _MockProductService implements ProductService {
   }
 }
 
-final mockProductServiceProvider = FutureProvider<ProductService>((ref) async {
+final productServiceProvider = FutureProvider<ProductService>((ref) async {
   if (_useMocks) {
     return _MockProductService();
   } else {

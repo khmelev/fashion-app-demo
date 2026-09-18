@@ -1,3 +1,4 @@
+import 'package:fashion_app/screens/catalog/stub_widget.dart';
 import 'package:fashion_app/screens/product_detail/size_select_screen.dart';
 import 'package:fashion_app/models/product.dart';
 import 'package:fashion_app/services/product_provider.dart';
@@ -14,8 +15,8 @@ class ProductDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final providerState = ref.watch(productProvider(_productId));
-    return providerState.when(
+    final productAsync = ref.watch(productProvider(_productId));
+    return productAsync.when(
       data: (product) {
         return Scaffold(
           appBar: AppBar(title: Text(product.name)),
@@ -28,7 +29,11 @@ class ProductDetailScreen extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stackTrace) => Center(child: Text('Error: $error')),
+      error: (error, stackTrace) => StubWidget(
+        onRetryPressed: () {
+          ref.invalidate(productProvider(_productId));
+        },
+      ),
     );
   }
 

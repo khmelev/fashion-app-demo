@@ -1,4 +1,5 @@
 import 'package:fashion_app/screens/catalog/catalog_product_tile.dart';
+import 'package:fashion_app/screens/catalog/stub_widget.dart';
 import 'package:fashion_app/services/product_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -11,14 +12,20 @@ class CatalogScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final providerState = ref.watch(catalogProductsProvider);
+    final productsAsync = ref.watch(catalogProductsProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Catalog')),
-      body: providerState.when(
+      body: productsAsync.when(
         data: (products) => _gridView(products),
         loading: () => _skeletons(),
-        error: (error, stackTrace) => Center(child: Text('Error: $error')),
+        error: (error, stackTrace) {
+          return StubWidget(
+            onRetryPressed: () {
+              ref.invalidate(catalogProductsProvider);
+            },
+          );
+        },
       ),
     );
   }

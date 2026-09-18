@@ -10,11 +10,7 @@ import 'package:fashion_app/utils/fake_data.dart';
 class CartController extends AsyncNotifier<CartState> {
   @override
   Future<CartState> build() async {
-    final isAuthorized = ref
-        .read(customerControllerProvider)
-        .value
-        .isAuthorized;
-    if (isAuthorized) {
+    if (ref.read(customerControllerProvider).value.isAuthorized) {
       return CartState(
         items: [
           CartItem(product: fakeProducts[0], size: .m, quantity: 1),
