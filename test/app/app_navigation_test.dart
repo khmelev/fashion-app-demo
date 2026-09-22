@@ -1,6 +1,6 @@
+import 'package:fashion_app/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:fashion_app/app/app.dart';
 import 'package:fashion_app/utils/fake_data.dart';
 
 void main() {

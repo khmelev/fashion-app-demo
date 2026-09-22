@@ -6,8 +6,6 @@ import 'package:fashion_app/utils/fake_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
 
-const bool _useMocks = true;
-
 abstract class ProductService {
   Future<List<Product>> getProducts();
   Future<List<Product>> getSimilarProducts(String productId);
@@ -77,7 +75,7 @@ class _GrpcProductService implements ProductService {
   }
 }
 
-class _MockProductService implements ProductService {
+class MockProductService implements ProductService {
   @override
   Future<List<Product>> getProducts() async {
     await Future.delayed(mockLongDelay);
@@ -98,14 +96,10 @@ class _MockProductService implements ProductService {
 }
 
 final productServiceProvider = FutureProvider<ProductService>((ref) async {
-  if (_useMocks) {
-    return _MockProductService();
-  } else {
-    final productService = _GrpcProductService();
-    await productService.initialize();
+  final productService = _GrpcProductService();
+  await productService.initialize();
 
-    ref.onDispose(() => productService.shutdown());
+  ref.onDispose(() => productService.shutdown());
 
-    return productService;
-  }
+  return productService;
 });
