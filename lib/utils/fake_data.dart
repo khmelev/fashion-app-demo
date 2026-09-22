@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:fashion_app/models/product.dart';
+import 'package:fashion_app/domain/models/product.dart';
 
 final List<Product> fakeProducts = List.unmodifiable([
   Product(

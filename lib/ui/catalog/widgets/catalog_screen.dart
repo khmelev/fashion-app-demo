@@ -1,9 +1,9 @@
-import 'package:fashion_app/screens/catalog/catalog_product_tile.dart';
-import 'package:fashion_app/screens/catalog/stub_widget.dart';
-import 'package:fashion_app/services/product_provider.dart';
-import 'package:flutter/material.dart';
+import 'package:fashion_app/ui/catalog/widgets/product_tile.dart';
+import 'package:fashion_app/ui/core/widgets/stub.dart';
+import 'package:fashion_app/data/repositories/product_repository.dart';
+import 'package:fashion_app/domain/models/product.dart';
 
-import 'package:fashion_app/models/product.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 

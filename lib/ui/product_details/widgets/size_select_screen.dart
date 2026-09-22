@@ -1,5 +1,5 @@
-import 'package:fashion_app/services/cart_controller.dart';
-import 'package:fashion_app/services/product_provider.dart';
+import 'package:fashion_app/data/repositories/cart_repository.dart';
+import 'package:fashion_app/data/repositories/product_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,7 +10,7 @@ class SizeSelectScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final providerState = ref.watch(productProvider(_productId));
+    final providerState = ref.watch(productDetailsProvider(_productId));
     return providerState.when(
       data: (product) {
         final sizes = product.sizes;
@@ -37,7 +37,7 @@ class SizeSelectScreen extends ConsumerWidget {
                       child: GestureDetector(
                         onTap: () {
                           ref
-                              .read(cartControllerProvider.notifier)
+                              .read(cartRepositoryProvider.notifier)
                               .addItem(
                                 product: product,
                                 size: size,

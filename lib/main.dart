@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:fashion_app/routing/router.dart';
-import 'package:fashion_app/utils/theme.dart';
+import 'package:fashion_app/ui/core/theme/theme.dart';
 
 void main() {
   runApp(
@@ -16,7 +16,6 @@ class FashionApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
-      title: 'Fashion App',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ref.watch(themeNotifierProvider).isDark

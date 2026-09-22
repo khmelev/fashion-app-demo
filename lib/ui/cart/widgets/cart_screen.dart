@@ -1,5 +1,5 @@
-import 'package:fashion_app/models/cart.dart';
-import 'package:fashion_app/services/cart_controller.dart';
+import 'package:fashion_app/domain/models/cart.dart';
+import 'package:fashion_app/data/repositories/cart_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,7 +8,7 @@ class CartScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final providerState = ref.watch(cartControllerProvider);
+    final providerState = ref.watch(cartRepositoryProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Cart')),
       body: providerState.when(
@@ -96,7 +96,7 @@ class _CartItemsState extends ConsumerState<CartItemsWidget> {
         IconButton(
           onPressed: () => {
             ref
-                .read(cartControllerProvider.notifier)
+                .read(cartRepositoryProvider.notifier)
                 .changeQty(cartItemId: cartItem.id, qtyChange: -1),
           },
           icon: Icon(Icons.remove),
@@ -112,7 +112,7 @@ class _CartItemsState extends ConsumerState<CartItemsWidget> {
         IconButton(
           onPressed: () => {
             ref
-                .read(cartControllerProvider.notifier)
+                .read(cartRepositoryProvider.notifier)
                 .changeQty(cartItemId: cartItem.id, qtyChange: 1),
           },
           icon: Icon(Icons.add),

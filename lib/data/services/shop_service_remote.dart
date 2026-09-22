@@ -1,29 +1,27 @@
+import 'package:fashion_app/data/services/shop_service.dart';
 import 'package:fashion_app/generated/product.pbgrpc.dart' as pb;
-import 'package:fashion_app/models/product.dart';
-import 'package:fashion_app/utils/const.dart';
-import 'package:fashion_app/utils/fake_data.dart';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fashion_app/domain/models/product.dart';
 import 'package:grpc/grpc.dart';
 
-abstract class ProductService {
-  Future<List<Product>> getProducts();
-  Future<List<Product>> getSimilarProducts(String productId);
-  Future<Product> getProduct(String productId);
-}
+final class ShopServiceRemote implements ShopService {
+  ShopServiceRemote({required this._channel, required this._client});
 
-class _GrpcProductService implements ProductService {
-  late ClientChannel _channel;
-  late pb.ProductServiceClient _client;
+  final ClientChannel _channel;
+  final pb.ProductServiceClient _client;
 
-  Future<void> initialize({String host = 'localhost', int port = 50051}) async {
-    _channel = ClientChannel(
+  static ShopServiceRemote build({
+    String host = 'localhost',
+    int port = 50051,
+  }) {
+    final channel = ClientChannel(
       host,
       port: port,
       options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
 
-    _client = pb.ProductServiceClient(_channel);
+    final client = pb.ProductServiceClient(channel);
+
+    return ShopServiceRemote(channel: channel, client: client);
   }
 
   @override
@@ -74,32 +72,3 @@ class _GrpcProductService implements ProductService {
     await _channel.shutdown();
   }
 }
-
-class MockProductService implements ProductService {
-  @override
-  Future<List<Product>> getProducts() async {
-    await Future.delayed(mockLongDelay);
-    return fakeProducts;
-  }
-
-  @override
-  Future<List<Product>> getSimilarProducts(String productId) async {
-    await Future.delayed(mockMiddleDelay);
-    return fakeProducts.where((item) => item.id != productId).toList();
-  }
-
-  @override
-  Future<Product> getProduct(String productId) async {
-    await Future.delayed(mockMiddleDelay);
-    return fakeProducts.firstWhere((item) => item.id == productId);
-  }
-}
-
-final productServiceProvider = FutureProvider<ProductService>((ref) async {
-  final productService = _GrpcProductService();
-  await productService.initialize();
-
-  ref.onDispose(() => productService.shutdown());
-
-  return productService;
-});

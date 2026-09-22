@@ -1,7 +1,7 @@
-import 'package:fashion_app/screens/catalog/stub_widget.dart';
-import 'package:fashion_app/screens/product_detail/size_select_screen.dart';
-import 'package:fashion_app/models/product.dart';
-import 'package:fashion_app/services/product_provider.dart';
+import 'package:fashion_app/ui/core/widgets/stub.dart';
+import 'package:fashion_app/ui/product_details/widgets/size_select_screen.dart';
+import 'package:fashion_app/domain/models/product.dart';
+import 'package:fashion_app/data/repositories/product_repository.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +15,7 @@ class ProductDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productAsync = ref.watch(productProvider(_productId));
+    final productAsync = ref.watch(productDetailsProvider(_productId));
     return productAsync.when(
       data: (product) {
         return Scaffold(
@@ -31,7 +31,7 @@ class ProductDetailScreen extends ConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stackTrace) => StubWidget(
         onRetryPressed: () {
-          ref.invalidate(productProvider(_productId));
+          ref.invalidate(productDetailsProvider(_productId));
         },
       ),
     );

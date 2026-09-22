@@ -1,5 +1,5 @@
-import 'package:fashion_app/services/customer_controller.dart';
-import 'package:fashion_app/utils/theme.dart';
+import 'package:fashion_app/data/repositories/customer_repository.dart';
+import 'package:fashion_app/ui/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,10 +8,10 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLoading = ref.watch(customerControllerProvider).isLoading;
+    final isLoading = ref.watch(customerRepositoryProvider).isLoading;
     final email =
-        ref.watch(customerControllerProvider).value is AuthorizedCustomerState
-        ? (ref.watch(customerControllerProvider).value
+        ref.watch(customerRepositoryProvider).value is AuthorizedCustomerState
+        ? (ref.watch(customerRepositoryProvider).value
                   as AuthorizedCustomerState)
               .email
         : 'Unknown';
@@ -37,7 +37,7 @@ class ProfileScreen extends ConsumerWidget {
               onPressed: isLoading
                   ? null
                   : () {
-                      ref.read(customerControllerProvider.notifier).logout();
+                      ref.read(customerRepositoryProvider.notifier).logout();
                     },
               child: isLoading
                   ? SizedBox(

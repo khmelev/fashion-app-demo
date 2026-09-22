@@ -1,60 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:fashion_app/models/cart.dart';
-import 'package:fashion_app/models/product.dart';
-import 'package:fashion_app/services/customer_controller.dart';
-import 'package:fashion_app/utils/const.dart';
-import 'package:fashion_app/utils/fake_data.dart';
-
-class CartController extends AsyncNotifier<CartState> {
-  @override
-  Future<CartState> build() async {
-    if (ref.read(customerControllerProvider).value.isAuthorized) {
-      return CartState(
-        items: [
-          CartItem(product: fakeProducts[0], size: .m, quantity: 1),
-          CartItem(product: fakeProducts[1], size: .s, quantity: 1),
-          CartItem(product: fakeProducts[2], size: .l, quantity: 2),
-        ],
-      );
-    } else {
-      return CartState.empty();
-    }
-  }
-
-  Future<void> addItem({
-    required Product product,
-    required ProductSize size,
-    int quantity = 1,
-  }) async {
-    state = const AsyncValue.loading();
-    await Future.delayed(mockShortDelay);
-    state = AsyncValue.data(
-      CartState.addItem(
-        currentState: state.value,
-        product: product,
-        size: size,
-        quantity: quantity,
-      ),
-    );
-  }
-
-  Future<void> changeQty({
-    required String cartItemId,
-    required int qtyChange,
-  }) async {
-    state = AsyncValue.data(
-      CartState.changeQuantity(
-        currentState: state.value!,
-        cartItemId: cartItemId,
-        qtyChange: qtyChange,
-      ),
-    );
-  }
-
-  bool get isEmpty => state.value!.isEmpty;
-}
+import 'package:fashion_app/domain/models/product.dart';
+import 'package:uuid/uuid.dart';
 
 class CartState {
   final List<CartItem> _items;
@@ -121,6 +67,15 @@ class CartState {
   bool get isEmpty => _items.isEmpty;
 }
 
-final cartControllerProvider = AsyncNotifierProvider<CartController, CartState>(
-  () => CartController(),
-);
+class CartItem {
+  CartItem({required this.product, required this.size, required this.quantity});
+
+  CartItem updateQty({required int newQty}) {
+    return CartItem(product: product, size: size, quantity: newQty);
+  }
+
+  final String id = const Uuid().v4();
+  final Product product;
+  final ProductSize size;
+  final int quantity;
+}

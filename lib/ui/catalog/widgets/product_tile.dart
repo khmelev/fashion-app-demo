@@ -1,5 +1,5 @@
-import 'package:fashion_app/models/product.dart';
-import 'package:fashion_app/screens/catalog/skeleton.dart';
+import 'package:fashion_app/domain/models/product.dart';
+import 'package:fashion_app/ui/core/widgets/skeleton.dart';
 import 'package:flutter/material.dart';
 
 class CatalogProductTile extends StatelessWidget {

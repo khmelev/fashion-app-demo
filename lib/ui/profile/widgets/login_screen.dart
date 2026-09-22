@@ -1,5 +1,5 @@
-import 'package:fashion_app/services/customer_controller.dart';
-import 'package:fashion_app/utils/theme.dart';
+import 'package:fashion_app/data/repositories/customer_repository.dart';
+import 'package:fashion_app/ui/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -69,7 +69,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(customerControllerProvider).isLoading;
+    final isLoading = ref.watch(customerRepositoryProvider).isLoading;
     final isDark = ref.watch(themeNotifierProvider).isDark;
     return Scaffold(
       appBar: AppBar(
@@ -146,7 +146,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     : () {
                         if (_isEmailValid() && _isPasswordValid()) {
                           ref
-                              .read(customerControllerProvider.notifier)
+                              .read(customerRepositoryProvider.notifier)
                               .authorize(
                                 email: _emailController.text.trim(),
                                 password: _passwordController.text.trim(),

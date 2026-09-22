@@ -2,11 +2,11 @@ import 'package:fashion_app/routing/routes.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:fashion_app/screens/cart/cart_screen.dart';
-import 'package:fashion_app/screens/catalog/catalog_screen.dart';
-import 'package:fashion_app/screens/main_screen.dart';
-import 'package:fashion_app/screens/product_detail/product_detail_screen.dart';
-import 'package:fashion_app/screens/profile/profile_container_screen.dart';
+import 'package:fashion_app/ui/cart/widgets/cart_screen.dart';
+import 'package:fashion_app/ui/catalog/widgets/catalog_screen.dart';
+import 'package:fashion_app/ui/main/main_screen.dart';
+import 'package:fashion_app/ui/product_details/widgets/product_detail_screen.dart';
+import 'package:fashion_app/ui/profile/widgets/profile_container_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'root',

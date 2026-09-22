@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:fashion_app/utils/const.dart';
+import 'package:fashion_app/utils/mock_const.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CustomerController extends AsyncNotifier<CustomerState> {
+class CustomerRepository extends AsyncNotifier<CustomerState> {
   @override
   Future<CustomerState> build() async => UnauthorizedCustomerState.instance;
 
@@ -54,7 +54,7 @@ class AuthorizedCustomerState extends CustomerState {
   final String email;
 }
 
-final customerControllerProvider =
-    AsyncNotifierProvider<CustomerController, CustomerState>(
-      () => CustomerController(),
+final customerRepositoryProvider =
+    AsyncNotifierProvider<CustomerRepository, CustomerState>(
+      () => CustomerRepository(),
     );
