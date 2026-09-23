@@ -1,11 +1,11 @@
 import 'package:fashion_app/ui/core/widgets/stub.dart';
+import 'package:fashion_app/ui/product_details/widgets/similar_products.dart';
 import 'package:fashion_app/ui/product_details/widgets/size_select_screen.dart';
 import 'package:fashion_app/domain/models/product.dart';
 import 'package:fashion_app/data/repositories/product_repository.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 /// Shows full details for a single [product].
 class ProductDetailScreen extends ConsumerWidget {
@@ -55,59 +55,14 @@ class ProductDetailScreen extends ConsumerWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          _similarProducts(context, ref),
+          _similarProducts(context),
         ],
       ),
     );
   }
 
-  Widget _similarProducts(BuildContext context, WidgetRef ref) {
-    final providerState = ref.watch(similarProductsProvider(_productId));
-    return providerState.when(
-      data: (similarProducts) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Similar products',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              height: 50,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: similarProducts.length,
-                itemBuilder: (context, index) {
-                  final item = similarProducts[index];
-                  return Padding(
-                    padding: EdgeInsets.only(right: 12),
-                    child: GestureDetector(
-                      onTap: () {
-                        GoRouter.of(context).pushNamed(
-                          'product_detail',
-                          pathParameters: {'id': item.id},
-                        );
-                      },
-                      child: Container(
-                        width: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Color(item.swatchColorValue),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        );
-      },
-      loading: () => SizedBox(height: 20),
-      error: (error, stackTrace) => SizedBox(height: 20),
-    );
+  Widget _similarProducts(BuildContext context) {
+    return SimilarProducts(productId: _productId);
   }
 
   Widget _addToCartButton(BuildContext context) {
