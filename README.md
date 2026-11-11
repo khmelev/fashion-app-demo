@@ -8,6 +8,12 @@ A simple fashion e-commerce demo: a Flutter app for Android and iOS, backed by a
 ![gRPC](https://img.shields.io/badge/gRPC-244C5A)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
+## Screenshots
+
+| Catalog | Product details | Cart | Profile |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/screenshots/catalog.png" width="200" alt="Catalog screen with a grid of products"> | <img src="docs/screenshots/product-details.png" width="200" alt="Product details screen with similar products"> | <img src="docs/screenshots/cart.png" width="200" alt="Cart screen with three items and quantity controls"> | <img src="docs/screenshots/profile.png" width="200" alt="Profile tab showing the login form"> |
+
 ## Features
 
 - **Catalog** — a product grid with skeleton loading and a retry screen on errors
